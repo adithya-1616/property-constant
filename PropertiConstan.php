@@ -1,4 +1,5 @@
 <?php
+
 class Produk {
     // Property
     public string $kode;
@@ -6,42 +7,43 @@ class Produk {
     public int $harga;
     public int $stok;
 
+    // Constant
     public const PAJAK = 0.11;
 
-    public function setProduk($kode, $nama, $harga, $stok) {
+    // Constructor
+    public function __construct($kode, $nama, $harga, $stok) {
         $this->kode = $kode;
         $this->nama = $nama;
         $this->harga = $harga;
         $this->stok = $stok;
     }
 
-    public function pajak() {
-        return $this->harga * self::PAJAK;
+    // Static Method
+    public static function pajak($harga) {
+        return $harga * self::PAJAK;
     }
 
-    public function total() {
-        return $this->harga + $this->pajak();
+    public static function total($harga) {
+        return $harga + self::pajak($harga);
     }
 
     public function tampilkanProduk() {
-        echo "Kode Produk: " . $this->kode;
-        echo "<br>";
-        echo "Nama Produk: " . $this->nama;
-        echo "<br>";
-        echo "Harga: Rp" . number_format($this->harga, 0, ',', '.');
-        echo "<br>";
-        echo "Stok: " . $this->stok;
-        echo "<br>";
-        echo "Pajak (11%): Rp" . number_format($this->pajak(), 0, ',', '.');
-        echo "<br>";
-        echo "Total Harga: Rp" . number_format($this->total(), 0, ',', '.');
+        echo "Kode Produk: " . $this->kode . "<br>";
+        echo "Nama Produk: " . $this->nama . "<br>";
+        echo "Harga: Rp" . number_format($this->harga, 0, ',', '.') . "<br>";
+        echo "Stok: " . $this->stok . "<br>";
+        echo "Pajak (11%): Rp" . number_format(self::pajak($this->harga), 0, ',', '.') . "<br>";
+        echo "Total Harga: Rp" . number_format(self::total($this->harga), 0, ',', '.');
     }
 }
 
-$produk = new Produk();
+// Membuat objek
+$produk = new Produk('A001', 'Laptop', 1000000, 5);
 
-$produk->setProduk('A001', 'Laptop', 1000000, 5);
-
+// Menampilkan produk
 $produk->tampilkanProduk();
+
+// Memanggil static method langsung dari class
+echo "<br><br>Pajak melalui Static Method: Rp" . number_format(Produk::pajak(1000000), 0, ',', '.');
 
 ?>
